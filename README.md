@@ -129,3 +129,7 @@
 - 当前缓冲区没有关联文件路径时，路径相关操作会直接返回并提示 `No file path for current buffer`
 - `yank_location` 在可视模式执行后会自动退出选区
 - 插件通过 `vim.notify()` 输出复制结果，便于确认实际写入内容
+
+## License
+
+MIT. See [LICENSE](/home/wanger/Documents/nvim_plugins/yank-more.nvim/LICENSE).
