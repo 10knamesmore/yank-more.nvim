@@ -31,6 +31,38 @@ local function clear_highlight(bufnr)
     vim.api.nvim_buf_clear_namespace(bufnr, highlight_ns, 0, -1)
 end
 
+--- 高亮整个缓冲区。
+---@param opts BetterYankOptions
+function M.highlight_entire_buffer(opts)
+    if not opts.highlight.enabled then
+        return
+    end
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    local group = get_highlight_group(opts)
+    local last_line = vim.api.nvim_buf_line_count(bufnr)
+
+    highlight_timer:stop()
+    clear_highlight(bufnr)
+
+    vim.hl.range(
+        bufnr,
+        highlight_ns,
+        group,
+        { 0, 0 },
+        { last_line - 1, get_line_end_col(bufnr, last_line) },
+        { regtype = "V", inclusive = true }
+    )
+
+    highlight_timer:start(
+        opts.highlight.timer,
+        0,
+        vim.schedule_wrap(function()
+            clear_highlight(bufnr)
+        end)
+    )
+end
+
 --- 高亮本次复制对应的源码范围。
 ---@param mode string
 ---@param opts BetterYankOptions

@@ -68,7 +68,7 @@ function M.yank_filepath_and_content(opts)
     local text = filepath .. "\n" .. content
 
     write_register(text, opts)
-    highlight.highlight_yank_target("V", opts)
+    highlight.highlight_entire_buffer(opts)
     vim.fn.winrestview(view)
     vim.notify("Yanked filepath + content: " .. filepath, vim.log.levels.INFO)
 end
@@ -82,7 +82,7 @@ function M.yank_all(opts)
     local text = table.concat(lines, "\n")
 
     write_register(text, opts)
-    highlight.highlight_yank_target("V", opts)
+    highlight.highlight_entire_buffer(opts)
     vim.fn.winrestview(view)
     vim.notify("Yanked all buffer text", vim.log.levels.INFO)
 end
