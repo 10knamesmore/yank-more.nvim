@@ -7,6 +7,7 @@ local mapping_handlers = {
     yank_filepath = actions.yank_filepath,
     yank_location = actions.yank_location,
     yank_all = actions.yank_all,
+    yank_filepath_and_content = actions.yank_filepath_and_content,
 }
 
 --- 注册默认按键映射。

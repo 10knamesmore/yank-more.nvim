@@ -53,6 +53,26 @@ function M.yank_location(opts)
     vim.notify("Yanked path with line: " .. result, vim.log.levels.INFO)
 end
 
+--- 复制当前缓冲区绝对路径 + 全部内容。
+---@param opts BetterYankOptions
+function M.yank_filepath_and_content(opts)
+    local filepath = location.get_current_filepath()
+    if not filepath then
+        return
+    end
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    local view = vim.fn.winsaveview()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local content = table.concat(lines, "\n")
+    local text = filepath .. "\n" .. content
+
+    write_register(text, opts)
+    highlight.highlight_yank_target("V", opts)
+    vim.fn.winrestview(view)
+    vim.notify("Yanked filepath + content: " .. filepath, vim.log.levels.INFO)
+end
+
 --- 复制整个缓冲区内容。
 ---@param opts BetterYankOptions
 function M.yank_all(opts)
