@@ -58,6 +58,9 @@
     group = "YankyYanked",
     timer = 150,
   },
+  diagnostic = {
+    no_diag_action = "yank",  -- "yank" 或 "notify"
+  },
   mappings = {
     yank_filename = {
       key = "gy",
@@ -79,6 +82,11 @@
       mode = "n",
       desc = "Yank All",
     },
+    yank_diagnostic = {
+      key = "<leader>yd",
+      mode = "n",
+      desc = "Yank Line with Diagnostic",
+    },
   },
 }
 ```
@@ -89,6 +97,9 @@
 - `highlight.enabled`: 是否在复制后高亮源码范围
 - `highlight.group`: 使用的高亮组；不存在时会默认 link 到 `Search`
 - `highlight.timer`: 高亮持续时间，单位毫秒
+- `diagnostic.no_diag_action`: 当没有诊断信息时的行为
+  - `"yank"` (默认): 仍然复制当前行代码
+  - `"notify"`: 仅提示 `No diagnostics found`，不复制
 - `mappings.*.key`: 设置按键；设为 `false` 可禁用该映射
 - `mappings.*.mode`: 对应映射模式，可为字符串或模式数组
 - `mappings.*.desc`: 映射描述，会传给 `vim.keymap.set`

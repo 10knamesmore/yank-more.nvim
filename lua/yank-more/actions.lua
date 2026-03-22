@@ -107,6 +107,8 @@ function M.yank_diagnostic(opts)
     local diagnostics = vim.diagnostic.get(bufnr, { lnum = line_idx })
 
     local text
+    local no_diag_action = opts.diagnostic and opts.diagnostic.no_diag_action or "yank"
+
     if #diagnostics > 0 then
         local diag_parts = {}
         for _, diag in ipairs(diagnostics) do
@@ -116,6 +118,11 @@ function M.yank_diagnostic(opts)
         local diag_text = table.concat(diag_parts, "\n")
         text = string.format("%s:%d\n%s\n%s", filepath, line, line_content, diag_text)
     else
+        if no_diag_action == "notify" then
+            vim.notify("No diagnostics found on line " .. line, vim.log.levels.WARN)
+            return
+        end
+        -- no_diag_action == "yank"
         text = string.format("%s:%d\n%s", filepath, line, line_content)
     end
 

@@ -3,6 +3,9 @@
 ---@field group? string
 ---@field timer? integer
 
+---@class BetterYankDiagnosticOptions
+---@field no_diag_action? "yank"|"notify"  -- 当没有诊断信息时的行为："yank" 复制代码行，"notify" 仅提示
+
 ---@class BetterYankMappingSpec
 ---@field key? string|false
 ---@field mode? string|string[]
@@ -19,6 +22,7 @@
 ---@class BetterYankOptions
 ---@field register? string
 ---@field highlight? BetterYankHighlightOptions
+---@field diagnostic? BetterYankDiagnosticOptions
 ---@field mappings? BetterYankMappingOptions
 
 local M = {}
@@ -29,6 +33,9 @@ M.defaults = {
         enabled = true,
         group = "YankyYanked",
         timer = 150,
+    },
+    diagnostic = {
+        no_diag_action = "yank",  -- "yank" 或 "notify"
     },
     mappings = {
         yank_filename = {
