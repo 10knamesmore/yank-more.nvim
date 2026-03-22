@@ -87,4 +87,41 @@ function M.yank_all(opts)
     vim.notify("Yanked all buffer text", vim.log.levels.INFO)
 end
 
+--- 复制当前行代码及其诊断信息。
+---@param opts BetterYankOptions
+function M.yank_diagnostic(opts)
+    local filepath = location.get_current_filepath()
+    if not filepath then
+        return
+    end
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+    local line_idx = line - 1
+
+    -- 获取当前行内容
+    local lines = vim.api.nvim_buf_get_lines(bufnr, line_idx, line_idx + 1, false)
+    local line_content = lines[1] or ""
+
+    -- 获取当前行的诊断信息
+    local diagnostics = vim.diagnostic.get(bufnr, { lnum = line_idx })
+
+    local text
+    if #diagnostics > 0 then
+        local diag_parts = {}
+        for _, diag in ipairs(diagnostics) do
+            local severity = vim.diagnostic.severity[diag.severity] or "UNKNOWN"
+            table.insert(diag_parts, string.format("[%s] %s", severity, diag.message))
+        end
+        local diag_text = table.concat(diag_parts, "\n")
+        text = string.format("%s:%d\n%s\n%s", filepath, line, line_content, diag_text)
+    else
+        text = string.format("%s:%d\n%s", filepath, line, line_content)
+    end
+
+    write_register(text, opts)
+    highlight.highlight_yank_target("n", opts)
+    vim.notify("Yanked line with diagnostic: " .. filepath .. ":" .. line, vim.log.levels.INFO)
+end
+
 return M

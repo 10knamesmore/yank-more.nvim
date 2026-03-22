@@ -14,6 +14,7 @@
 ---@field yank_location? BetterYankMappingSpec
 ---@field yank_all? BetterYankMappingSpec
 ---@field yank_filepath_and_content? BetterYankMappingSpec
+---@field yank_diagnostic? BetterYankMappingSpec
 
 ---@class BetterYankOptions
 ---@field register? string
@@ -54,6 +55,11 @@ M.defaults = {
             key = "<leader>yY",
             mode = "n",
             desc = "Yank Filepath + Content",
+        },
+        yank_diagnostic = {
+            key = "<leader>yd",
+            mode = "n",
+            desc = "Yank Line with Diagnostic",
         },
     },
 }
